@@ -1,29 +1,36 @@
 from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
 
 import vk
+from vk.exceptions import VkAPIError
 
 from .models import User
 
 
 def vk_auth(request):
     vk_token = request.GET.get('access_token')
-    session = vk.Session()
-    api = vk.API(session, v=5.0)
-    user_info = api.users.get(access_token=vk_token, fields=['photo_200', ])[0]
-    user_id = user_info['id']
-    same_user = User.objects.filter(vk_id=user_id)
-    if same_user.exists():
-        user = authenticate(vk_id=user_id)
-        login(request, user)
-        return {'success': True}
-    else:
-        new_user = User(
-            vk_id=user_id,
-            first_name=user_info['first_name'],
-            last_name=user_info['last_name'],
-            role='User',
-            picture=user_info['photo_200'],
-        )
-        new_user.save()
-        return {'success': True}
-    return {'error': True}
+    if vk_token:
+        session = vk.Session()
+        api = vk.API(session, v=5.0)
+        try:
+            user_info = api.users.get(access_token=vk_token, fields=['photo_200', ])[0]
+        except VkAPIError as e:
+            return JsonResponse({'error': {'code': e.code, 'message': e.message}})
+        user_id = user_info['id']
+        same_user = User.objects.filter(vk_id=user_id)
+        if same_user.exists():
+            user = authenticate(vk_id=user_id)
+            login(request, user)
+            return JsonResponse({'success': True})
+        else:
+            new_user = User(
+                vk_id=user_id,
+                first_name=user_info['first_name'],
+                last_name=user_info['last_name'],
+                role='User',
+                picture=user_info['photo_200'],
+            )
+            new_user.save()
+            return JsonResponse({'success': True})
+
+    return JsonResponse({'error': True})
