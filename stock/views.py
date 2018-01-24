@@ -14,7 +14,7 @@ def create_order(request):
         order = models.Order(
             title=title,
             description=description,
-            orderer=request.User)
+            orderer=request.user)
         order.save()
         return JsonResponse({'success': True})
 
