@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'core',
+    'corsheaders',
     'registration',
     'portfolio',
     'stock',
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -129,3 +131,9 @@ AUTH_USER_MODEL = 'auth.User'
 AUTHENTICATION_BACKENDS = (
     'registration.auth_backend.PasswordlessAuthBackend',
 )
+
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000'
+)
+
+CORS_ALLOW_CREDENTIALS = True
