@@ -31,6 +31,8 @@ def vk_auth(request):
                 picture=user_info['photo_200'],
             )
             new_user.save()
+            user = authenticate(vk_id=user_id)
+            login(request, user)
             return JsonResponse({'success': True})
 
     return JsonResponse({'error': True})
