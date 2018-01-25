@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import UserManager
+
 
 ROLE_CHOICES = (
     ('Admin', 'Admin'),
@@ -29,7 +31,7 @@ class User(AbstractBaseUser):
     )
     about = models.TextField()
     picture = models.ImageField()
-
+    objects = UserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
