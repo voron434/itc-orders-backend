@@ -126,10 +126,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'auth.User'
+AUTH_USER_MODEL = 'registration.User'
 
 AUTHENTICATION_BACKENDS = (
     'registration.auth_backend.PasswordlessAuthBackend',
+    'registration.auth_backend.PasswordAuthBackend',
 )
 
 CORS_ORIGIN_WHITELIST = (
