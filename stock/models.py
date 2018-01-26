@@ -14,7 +14,6 @@ ORDER_STATUSES_CHOICES = (
 class Order(models.Model):
     title = models.CharField(
         max_length=40,
-        unique=True,
     )
     description = models.TextField()
     orderer = models.ForeignKey(User)
