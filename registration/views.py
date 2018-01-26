@@ -5,6 +5,7 @@ import vk
 from vk.exceptions import VkAPIError
 
 from .models import User
+from .serializers import UserSerializer
 
 
 def vk_auth(request):
@@ -21,10 +22,12 @@ def vk_auth(request):
         if same_user.exists():
             user = authenticate(vk_id=user_id)
             login(request, user)
+            json_user = UserSerializer(user)
             return JsonResponse({
                 'success': True,
-                'user': user
+                'user': json_user.data
             })
+
         else:
             new_user = User(
                 vk_id=user_id,
@@ -36,9 +39,10 @@ def vk_auth(request):
             new_user.save()
             user = authenticate(vk_id=user_id)
             login(request, user)
+            json_user = UserSerializer(user)
             return JsonResponse({
                 'success': True,
-                'user': user
+                'user': json_user.data
             })
 
     return JsonResponse({'error': True})
