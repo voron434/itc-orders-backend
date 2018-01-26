@@ -21,7 +21,10 @@ def vk_auth(request):
         if same_user.exists():
             user = authenticate(vk_id=user_id)
             login(request, user)
-            return JsonResponse({'success': True})
+            return JsonResponse({
+                'success': True,
+                'user': user
+            })
         else:
             new_user = User(
                 vk_id=user_id,
@@ -33,6 +36,9 @@ def vk_auth(request):
             new_user.save()
             user = authenticate(vk_id=user_id)
             login(request, user)
-            return JsonResponse({'success': True})
+            return JsonResponse({
+                'success': True,
+                'user': user
+            })
 
     return JsonResponse({'error': True})
