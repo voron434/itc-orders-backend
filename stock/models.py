@@ -37,7 +37,6 @@ class Order(models.Model):
 class Project(models.Model):
     title = models.CharField(max_length=40)
     description = models.TextField()
-    users = models.ManyToManyField(User, related_name='projects')
     order = models.OneToOneField(Order, related_name='project')
     status = models.CharField(
         max_length=15,
@@ -48,3 +47,13 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class CrossProjectUser(models.Model):
+    user = models.ForeignKey(User)
+    project = models.ForeignKey(Project)
+    role = models.CharField(max_length=20)
+    description = models.TextField()
+
+    def __str__(self):
+        return '{0} : {1}'.format(self.user, self.project)
