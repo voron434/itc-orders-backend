@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 from . import models
+from . import serializers
 
 
 @ensure_csrf_cookie
@@ -19,3 +20,13 @@ def create_order(request):
         return JsonResponse({'success': True})
 
     return JsonResponse({'error': True})
+
+
+@login_required
+def list_order(request):
+    orders_list = models.Order.objects.filter(orderer=request.user)
+    json_orders = serializers.OrderSerializer(orders_list, many=True)
+    return JsonResponse({
+        'success': True,
+        'orders': json_orders,
+    })
