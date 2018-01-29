@@ -10,18 +10,41 @@ ORDER_STATUSES_CHOICES = (
     ('Archieved', 'Archieved'),
 )
 
+PROJECT_STATUSES_CHOICES = (
+    ('Draft', 'Draft'),
+    ('Approved', 'Approved'),
+    ('Operative', 'Operative'),
+    ('Inoperative', 'Inoperative'),
+)
+
 
 class Order(models.Model):
     title = models.CharField(
         max_length=40,
     )
     description = models.TextField()
-    orderer = models.ForeignKey(User)
+    orderer = models.ForeignKey(User, related_name='orders')
     status = models.CharField(
         max_length=10,
         choices=ORDER_STATUSES_CHOICES,
         default='New',
     )
+
+    def __str__(self):
+        return self.title
+
+
+class Project(models.Model):
+    title = models.CharField(max_length=40)
+    description = models.TextField()
+    users = models.ManyToManyField(User, related_name='projects')
+    order = models.OneToOneField(Order, related_name='project')
+    status = models.CharField(
+        max_length=15,
+        choices=PROJECT_STATUSES_CHOICES,
+        default='Draft',
+    )
+    deadline = models.DateTimeField()
 
     def __str__(self):
         return self.title
