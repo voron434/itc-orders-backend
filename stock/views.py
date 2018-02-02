@@ -28,5 +28,5 @@ def list_order(request):
     json_orders = serializers.OrderSerializer(orders_list, many=True)
     return JsonResponse({
         'success': True,
-        'orders': json_orders,
+        'orders': json_orders.data,
     })
