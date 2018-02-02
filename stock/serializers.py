@@ -8,6 +8,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Order
         fields = [
+            'id',
             'title',
             'description',
             'status',
@@ -19,6 +20,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Project
         fields = [
+            'id',
             'title',
             'description',
             'status',
