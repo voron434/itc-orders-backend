@@ -11,7 +11,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 pip install wheel
 ```
-You should run ```source venv/bin/activate``` every time you want to use thise code to modify your command line to:
+You should run ```source venv/bin/activate``` every time you want to use this code to modify your command line to:
 ```(venv) $```. To stop venv you should use ```(venv) $ deactivate```
 
 ```python manage.py migrate``` - to migrate your database
